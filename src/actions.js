@@ -3,27 +3,26 @@
  * action types
  */
 
-export const ADD_TODO = 'ADD_TODO'
-export const COMPLETE_TODO = 'COMPLETE_TODO'
-export const SET_VISIBILITY_FILTER = 'SET_VISIBILITY_FILTER'
 
-export const UPDATE = "Update"
-export const GET_ROOM = "Get_Room"
-export const GET_NEW_USER = "New_User"
-export const GET_NEW_ROOM = "New_Room"
-export const ON_ROOMDATA_UPDATE = "Room_Update"
-export const ON_USER_UPDATE = "New_User"
-export const ON_NEW_ROOM = "New_Room"
+export const Events =  {
 
+  UPDATE : "Update",
+  GET_ROOM : "Get_Room",
+  GET_NEW_USER : "New_User",
+  GET_NEW_ROOM : "New_Room",
+  ON_ROOMDATA_UPDATE : "Room_Update",
+  ON_USER_UPDATE : "New_User",
+  ON_NEW_ROOM : "New_Room",
+}
+
+export const Actions = {
+  new_user: "new_user",
+  on_user_update : "on_user_update"
+}
 /*
  * other constants
  */
 
-export const VisibilityFilters = {
-  SHOW_ALL: 'SHOW_ALL',
-  SHOW_COMPLETED: 'SHOW_COMPLETED',
-  SHOW_ACTIVE: 'SHOW_ACTIVE'
-}
 
 
 
@@ -52,8 +51,8 @@ export const VisibilityFilters = {
 //   return { type: GET_ROOM, data:{roomId,userId}}
 // }
 export function getNewUserByName(name){
-  return { type: "new_user", data:{name}}
+  return { type: Actions.new_user, data:{name}}
 }
 export function onUserDataUpdate(data){
-  return { type: "on_user_update", data }
+  return { type: Actions.on_user_update, data }
 }
