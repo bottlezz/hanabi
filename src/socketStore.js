@@ -2,7 +2,8 @@ import io from 'socket.io-client'
 import {Events} from './actions'
 import {onUserDataUpdate,onRoomCreation} from './actions'
 import store from "./reduxStore"
-const socket=io('http://192.168.1.33:8000');
+import socketServerUrl from './socketServerUrl'
+const socket=io(socketServerUrl);
 
 
 socket.on('test',function(data){console.log(data)});
