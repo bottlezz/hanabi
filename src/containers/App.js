@@ -5,30 +5,19 @@ import CreateUser from '../components/CreateUser';
 import AddTodo from '../components/AddTodo';
 import TodoList from '../components/TodoList';
 import Footer from '../components/Footer';
+import Room from './Room'
 
 class App extends Component {
   render() {
-    const { dispatch,user } = this.props
+    const { dispatch,user,room } = this.props
+    //TODO, cookie support, get user from cookie
     return (
       <div>
         <CreateUser
-          onAddClick={text =>dispatch(getNewUserByName(text))} />
-        <TodoList
-          todos={[{
-            text: 'Use Redux',
-            completed: true
-          }, {
-            text: 'Learn to connect it to React',
-            completed: false
-          }]}
-          onTodoClick={todo =>
-            console.log('todo clicked', todo)
-          } />
-        <Footer
-          filter='SHOW_ALL'
-          onFilterChange={filter =>
-            console.log('filter change', filter)
-          } />
+          onAddClick={text =>dispatch(getNewUserByName(text))} name={user.name} />
+        <div>
+          <Room {...this.props}></Room>
+        </div>
 
       </div>
     );
@@ -64,7 +53,8 @@ function select(state) {
     // visibleTodos: selectTodos(state.todos, state.visibilityFilter),
     // visibilityFilter: state.visibilityFilter,
 
-    user: state.user
+    user: state.user,
+    room: state.room
   }
 }
 
