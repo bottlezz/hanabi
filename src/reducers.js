@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux'
 import  socket  from './socketStore'
 import {Events,Actions} from './actions'
-
+import {Hand, Card, GameData} from './hanabi/models'
 
 function user(state={},action){
   switch (action.type) {
@@ -23,13 +23,34 @@ function room(state={},action){
   switch (action.type) {
     case Actions.get_room:
       socket.emit(Events.GET_ROOM , action.data)
+      console.log(action.data)
       return state
     case Actions.on_room_creation:
-      console.log(action.data);
-      return Object.assign({},state,action.data);
+      action.data.roomData.game=new GameData();
+      var ret=Object.assign({},state,action.data);
+      console.log(ret.roomData.game);
+      return ret
 
     default:
       return state;
+
+  }
+}
+function game(state={},action){
+  switch (action.type) {
+    case expression:
+
+      break;
+    default:
+
+  }
+}
+function players(state={},action){
+  switch (action.type) {
+    case expression:
+
+      break;
+    default:
 
   }
 }

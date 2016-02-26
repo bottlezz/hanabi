@@ -1,1 +1,1 @@
-export const socketServerUrl = 'http://192.168.1.33:8000'
+export const socketServerUrl = 'http://godaba.com:8000'

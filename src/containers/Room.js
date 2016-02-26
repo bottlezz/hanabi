@@ -35,9 +35,9 @@ export default class Room extends Component {
 }
 class UserList extends Component {
   render(){
-    var  user = function(item){
-      return <li>{item}</li>
+    var userItem = function(item){
+      return <li key={item}>{item}</li>
     }
-    return <ul>{this.props.users.map(user)}</ul>
+    return <ul>{this.props.users.map(userItem)}</ul>
   }
 }

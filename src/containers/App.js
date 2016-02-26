@@ -2,10 +2,8 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { getNewUserByName, addTodo, completeTodo, setVisibilityFilter, VisibilityFilters } from '../actions'
 import CreateUser from '../components/CreateUser';
-import AddTodo from '../components/AddTodo';
-import TodoList from '../components/TodoList';
-import Footer from '../components/Footer';
 import Room from './Room'
+import Game from '../hanabi/Game'
 
 class App extends Component {
   render() {
