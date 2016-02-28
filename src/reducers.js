@@ -27,9 +27,9 @@ function room(state={},action){
       console.log(action.data)
       return state
     case Actions.on_room_creation:
-      action.data.roomData.game=new GameData();
+
       var ret=Object.assign({},state,action.data);
-      console.log(ret.roomData.game);
+      console.log(ret);
       return ret
 
     default:
@@ -40,12 +40,13 @@ function room(state={},action){
 
 function players(state={},action){
   switch (action.type) {
-    case expression:
+    case "":
 
       break;
     default:
-
+    return state;
   }
+
 }
 
 const godaba = combineReducers({

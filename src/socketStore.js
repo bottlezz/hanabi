@@ -18,13 +18,13 @@ socket.on(Events.ON_USER_CREATION, function(data){
   store.dispatch(onUserDataUpdate(data));
 })
 socket.on(Events.GET_ROOM,function(data){
-  //console.log(data);
+  console.log(data);
   store.dispatch(onRoomCreation(data))
 })
-socket.on(Events.ON_ROOMDATA_UPDATE, function(data)){
+socket.on(Events.ON_ROOMDATA_UPDATE, function(data){
   //update Room
   //update game
   //update players
-}
+})
 
 export default socket;

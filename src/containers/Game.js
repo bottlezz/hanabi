@@ -7,38 +7,40 @@ export default class Game extends Component {
       <div>
         <span>remaining:{gameTable.cardDeck.length}</span>
         <span></span>
+        <p>
+          <button onClick={ready()}>Ready</button>
+          <button onClick={start()}>Start</button>
+        </p>
       </div>
     )
   }
   ready(){
-
+     console.log("Ready");
   }
   start(){
-
+    console.log("start");
   }
-
-
   addPlayer(player){
     //actually, this should be called in socket store.
     players.add(player);
   }
-  draw(){
-    return this.cardDeck.pop();
-  }
+
   discard(card){
-    update hand
-    emit...
+    cosnole.log("discard")
   }
   play(card){
-    update hand
-    calculate {Table} see if it needs to be update.
-    emit...
+    console.log("play");
   }
   hint(userid,[cardIndx],hintType(number or color)){
-    emit...
+    console.log("hint");
   }
+
   next(){
-    get next player.
-    emit...
+    console.log("next");
+  }
+
+  draw(){
+    console.log("draw");
+    //return this.cardDeck.pop();
   }
 }

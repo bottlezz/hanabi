@@ -2,12 +2,12 @@ import  socket  from '../socketStore'
 
 export default function gameTable(state={},action){
   switch (action.type) {
-    case Action.init_game:
+    case action.init_game:
       var deck=createDeck();
       return Object.assign({},{cardDeck:deck, discardDeck:[], playedCards:[]});
 
       break;
-    case Action.remove_top:
+    case action.remove_top:
       socket.emit(Events.UPDATE, action.data)
       return state;
       break;

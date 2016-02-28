@@ -1,31 +1,25 @@
 import React, { Component, PropTypes } from 'react'
 import {findDOMNode} from 'react-dom'
 
-export default class CreateUser extends Component {
+export default class SingleInputWithButton extends Component {
   render() {
-    if(this.props.name==null){
       return (
         <div>
-          <h3>Create User</h3>
-          <p>Please enter your display name</p>
+          <h3>{this.props.meta?this.props.meta.label:'label'}</h3>
+          <p>{this.props.meta?this.props.meta.description:'description'}</p>
           <input type='text' ref='input' />
 
           <button onClick={e => this.handleClick(e)}>
-            Create
+            {this.props.meta?this.props.meta.submit:'submit'}
           </button>
 
         </div>
-      );
-    }else{
-      return (
-        <div>Hello, <span>{this.props.name}</span></div>
-      );
-    }
+      )
   }
   handleClick(e) {
     const node = findDOMNode(this.refs.input);
     const text = node.value.trim();
-    this.props.onAddClick(text);
+    this.props.onButtonClick(text);
     node.value = '';
   }
 }

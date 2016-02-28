@@ -2,11 +2,19 @@ import React, { Component, PropTypes } from 'react'
 import {findDOMNode} from 'react-dom'
 import {getRoom} from '../actions'
 import JoinRoom from '../components/JoinRoom'
+import socket from '../socketStore'
+import {Events} from '../actions'
+import SingleInputWithButton from "../components/SingleInputWithButton"
 
 export default class Room extends Component {
 
   render() {
     const { dispatch,user,room,gameTable,players }=this.props
+    var joinRoomMeta = {
+      label:"Join Room",
+      description:"please enter the Room name you want to join or create",
+      submit:"Join"
+    }
     if(user.userId==null){
       //TODO:will need to refine this, user can be a guest.
       return <div></div>;
@@ -14,9 +22,9 @@ export default class Room extends Component {
 
       if(room.roomId == null){
         return (
-          //Display the JoinRoom view
-          <JoinRoom userId={user.userId}
-            onJoinClick = {data=>dispatch(getRoom(data))}/>)
+          //Display the box for join room
+          <SingleInputWithButton meta={joinRoomMeta}
+            onButtonClick = {data=>socket.emit(Events.GET_ROOM , data)}/>)
       }else{
         // game logic starts here
         return (
