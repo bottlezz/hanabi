@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { getNewUserByName, addTodo, completeTodo, setVisibilityFilter, VisibilityFilters } from '../actions'
-import CreateUser from '../components/CreateUser';
 import Room from './Room'
 import SingleInputWithButton from "../components/SingleInputWithButton"
 
@@ -14,7 +13,11 @@ class App extends Component {
     if(user.userId){
       userLogin = (<div>Hello, <span>{user.name}</span></div>)
     }else{
-      let meta={label:"Name",description:"To start, enter a display name",submit:"Start"}
+      let meta={
+        label:"Name",
+        description:"To start, enter a display name",
+        submit:"Start"
+      }
       userLogin = (<SingleInputWithButton meta={meta}
         onButtonClick={text =>dispatch(getNewUserByName(text))}>
       </SingleInputWithButton>)

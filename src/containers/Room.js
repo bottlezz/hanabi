@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import {findDOMNode} from 'react-dom'
 import {getRoom} from '../actions'
-import JoinRoom from '../components/JoinRoom'
 import socket from '../socketStore'
 import {Events} from '../actions'
 import SingleInputWithButton from "../components/SingleInputWithButton"
