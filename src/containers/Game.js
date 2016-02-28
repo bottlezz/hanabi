@@ -2,27 +2,25 @@ import React, { Component, PropTypes } from 'react'
 import {Hand, Card, GameData} from './models'
 export default class Game extends Component {
   render(){
-
+    const { dispatch,user,room,gameTable,players } = this.props
+    return (
+      <div>
+        <span>remaining:{gameTable.cardDeck.length}</span>
+        <span></span>
+      </div>
+    )
   }
   ready(){
 
   }
   start(){
-    
-  }
-  shuffleDeck(){
-    let length=this.data.cardDeck.length;
-    for(let i=0;i<length;i++){
-      let ran=Math.floor(Math.random()*length);
-      //swap
-      let t=this.data.cardDeck[i];
-      this.data.cardDeck[i]=this.cardDeck[ran];
-      this.data.cardDeck[ran] = t;
-    }
+
   }
 
+
   addPlayer(player){
-    this.players.push(player);
+    //actually, this should be called in socket store.
+    players.add(player);
   }
   draw(){
     return this.cardDeck.pop();

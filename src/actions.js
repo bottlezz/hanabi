@@ -11,6 +11,7 @@ export const Events =  {
   GET_NEW_USER : "New_User",
   GET_NEW_ROOM : "New_Room",
   //sub
+  //room update will dispatch data to table or palyers.
   ON_ROOMDATA_UPDATE : "Room_Update",
   ON_USER_CREATION : "New_User",
   ON_USER_UPDATE:"User_Update",
@@ -24,7 +25,13 @@ export const Actions = {
   get_room : "get_room",
   on_room_creation: "on_room_creation",
   on_roomdata_update:"on_roomdata_update",
-  on_room_join:"on_room_join"
+  on_room_join:"on_room_join",
+  //game logic
+  init_game:"init_game",
+  remove_top:"remove_top",
+  update_table:"update_table",
+  update_players:"update_players"
+
 
 }
 /*
@@ -44,9 +51,19 @@ export function onUserDataUpdate(data){
 export function getRoom(data){
   return { type: Actions.get_room, data}
 }
+export function initiateGame(){
+  return {type: Actions.init_game}
+}
+export function updateTable(data){
+  return {type: Actions.update_table, data}
+}
+export function updatePlayers(data){
+  return {type: Actions.update_players, data}
+}
 export function onRoomCreation(data){
   return { type: Actions.on_room_creation, data}
 }
+
 export function onRoomDataUpdate(data){
 
 }

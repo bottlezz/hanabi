@@ -2,6 +2,7 @@ import { combineReducers } from 'redux'
 import  socket  from './socketStore'
 import {Events,Actions} from './actions'
 import {Hand, Card, GameData} from './hanabi/models'
+import gameTable from './reducers/gameTable'
 
 function user(state={},action){
   switch (action.type) {
@@ -36,15 +37,7 @@ function room(state={},action){
 
   }
 }
-function game(state={},action){
-  switch (action.type) {
-    case expression:
 
-      break;
-    default:
-
-  }
-}
 function players(state={},action){
   switch (action.type) {
     case expression:
@@ -55,9 +48,11 @@ function players(state={},action){
   }
 }
 
-const todoApp = combineReducers({
+const godaba = combineReducers({
   user,
-  room
+  room,
+  gameTable,
+  players
 })
 
-export default todoApp
+export default godaba

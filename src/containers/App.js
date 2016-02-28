@@ -7,7 +7,7 @@ import Game from '../hanabi/Game'
 
 class App extends Component {
   render() {
-    const { dispatch,user,room } = this.props
+    const { dispatch,user,room,gameTable,players } = this.props
     //TODO, cookie support, get user from cookie
     return (
       <div>

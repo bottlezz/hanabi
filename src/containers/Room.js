@@ -6,7 +6,7 @@ import JoinRoom from '../components/JoinRoom'
 export default class Room extends Component {
 
   render() {
-    const {dispatch,user,room}=this.props
+    const { dispatch,user,room,gameTable,players }=this.props
     if(user.userId==null){
       //TODO:will need to refine this, user can be a guest.
       return <div></div>;
