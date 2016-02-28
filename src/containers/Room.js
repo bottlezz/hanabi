@@ -4,11 +4,12 @@ import {getRoom} from '../actions'
 import socket from '../socketStore'
 import {Events} from '../actions'
 import SingleInputWithButton from "../components/SingleInputWithButton"
+import Game from './Game'
 
 export default class Room extends Component {
 
   render() {
-    const { dispatch,user,room,gameTable,players }=this.props
+    const { dispatch,user,room}=this.props
     var joinRoomMeta = {
       label:"Join Room",
       description:"please enter the Room name you want to join or create",
@@ -23,7 +24,7 @@ export default class Room extends Component {
         return (
           //Display the box for join room
           <SingleInputWithButton meta={joinRoomMeta}
-            onButtonClick = {data=>socket.emit(Events.GET_ROOM , data)}/>)
+            onButtonClick = {text=>socket.emit(Events.GET_ROOM , { roomId:text, userId:user.userId})}/>)
       }else{
         // game logic starts here
         return (
@@ -33,6 +34,7 @@ export default class Room extends Component {
               <p>UserList</p>
               <UserList users={room.users}/>
             </div>
+            <Game {...this.props}/>
           </div>
 
         )

@@ -1,9 +1,6 @@
-
 /*
  * action types
  */
-
-
 export const Events =  {
 //pub
   UPDATE : "Update",
@@ -18,7 +15,6 @@ export const Events =  {
   ON_NEW_ROOM : "New_Room",
   ON_ROOM_JOIN : "Get_Room"
 }
-
 export const Actions = {
   new_user: "new_user",
   on_user_update : "on_user_update",
@@ -29,19 +25,17 @@ export const Actions = {
   //game logic
   init_game:"init_game",
   remove_top:"remove_top",
+  deal_cards:"deal_cards",
   update_table:"update_table",
   update_players:"update_players"
-
 
 }
 /*
  * other constants
  */
-
 /*
  * action creators
  */
-
 export function getNewUserByName(name){
   return { type: Actions.new_user, data:{name}}
 }
@@ -52,17 +46,24 @@ export function getRoom(data){
   return { type: Actions.get_room, data}
 }
 export function initiateGame(){
-  return {type: Actions.init_game}
+  return { type: Actions.init_game}
+}
+export function dealCards(cards){
+  return { type: Actions.deal_cards, cards}
+}
+export function removeTop(count){
+  return { type: Actions.remove_top, count}
 }
 export function updateTable(data){
-  return {type: Actions.update_table, data}
+  return { type: Actions.update_table, data}
 }
 export function updatePlayers(data){
-  return {type: Actions.update_players, data}
+  return { type: Actions.update_players, data}
 }
 export function onRoomCreation(data){
   return { type: Actions.on_room_creation, data}
 }
+
 
 export function onRoomDataUpdate(data){
 

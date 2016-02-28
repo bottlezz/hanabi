@@ -21,6 +21,7 @@ export class Hand{
 }
 export class player{
   constructor(){
+    this.id="";
     this.displayName="";
     this.status=0;
     this.hand=new Hand();

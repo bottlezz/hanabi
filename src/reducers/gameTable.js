@@ -1,13 +1,16 @@
 import  socket  from '../socketStore'
+import {Actions} from '../actions'
 
 export default function gameTable(state={},action){
+  console.log(action.type);
   switch (action.type) {
-    case action.init_game:
+    case Actions.init_game:
       var deck=createDeck();
       return Object.assign({},{cardDeck:deck, discardDeck:[], playedCards:[]});
 
+
       break;
-    case action.remove_top:
+    case Actions.remove_top:
       socket.emit(Events.UPDATE, action.data)
       return state;
       break;
@@ -18,27 +21,27 @@ export default function gameTable(state={},action){
 
   }
   function createDeck(){
-    cardDeck = [];
+    let cardDeck = [];
     for(let i=1;i<6;i++){
-      cardDeck.push(new Card("red",i));
-      cardDeck.push(new Card("yellow",i));
-      cardDeck.push(new Card("white",i));
-      cardDeck.push(new Card("green",i));
-      cardDeck.push(new Card("blue",i));
+      cardDeck.push( Card("red",i));
+      cardDeck.push( Card("yellow",i));
+      cardDeck.push( Card("white",i));
+      cardDeck.push( Card("green",i));
+      cardDeck.push( Card("blue",i));
     }
     for(let i=1;i<5;i++){
-      cardDeck.push(new Card("red",i));
-      cardDeck.push(new Card("yellow",i));
-      cardDeck.push(new Card("white",i));
-      cardDeck.push(new Card("green",i));
-      cardDeck.push(new Card("blue",i));
+      cardDeck.push( Card("red",i));
+      cardDeck.push( Card("yellow",i));
+      cardDeck.push( Card("white",i));
+      cardDeck.push( Card("green",i));
+      cardDeck.push( Card("blue",i));
     }
     for(let i=1;i<2;i++){
-      cardDeck.push(new Card("red",i));
-      cardDeck.push(new Card("yellow",i));
-      cardDeck.push(new Card("white",i));
-      cardDeck.push(new Card("green",i));
-      cardDeck.push(new Card("blue",i));
+      cardDeck.push( Card("red",i));
+      cardDeck.push( Card("yellow",i));
+      cardDeck.push( Card("white",i));
+      cardDeck.push( Card("green",i));
+      cardDeck.push( Card("blue",i));
     }
     for(let i=1;i<15;i++){
       shuffleDeck(cardDeck);
@@ -46,14 +49,18 @@ export default function gameTable(state={},action){
 
     return cardDeck;
   }
-  function shuffleDeck(deck){
+  function shuffleDeck(cardDeck){
     let length=cardDeck.length;
     for(let i=0;i<length;i++){
       let ran=Math.floor(Math.random()*length);
       //swap
       let t=cardDeck[i];
-      cardDeck[i]=this.cardDeck[ran];
+      cardDeck[i]=cardDeck[ran];
       cardDeck[ran] = t;
     }
   }
+  function Card(color,number){
+    return {color,number,hintColor:null,hintNumber:null}
+  }
+
 }

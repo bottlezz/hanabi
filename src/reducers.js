@@ -38,11 +38,14 @@ function room(state={},action){
   }
 }
 
-function players(state={},action){
+function players(state=[],action){
   switch (action.type) {
-    case "":
+    case Actions.update_players:
+      return Object.assign([],action.data);
 
       break;
+    case Actions.deal_cards:
+      return [];
     default:
     return state;
   }
