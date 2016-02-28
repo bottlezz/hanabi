@@ -4,6 +4,7 @@
 export const Events =  {
 //pub
   UPDATE : "Update",
+  BROADCAST : "Broadcast",
   GET_ROOM : "Get_Room",
   GET_NEW_USER : "New_User",
   GET_NEW_ROOM : "New_Room",

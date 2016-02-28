@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import {updatePlayers,initiateGame} from '../actions'
+import {PlayerService, GameService} from '../hanabi/gameServices'
+
 export default class Game extends Component {
   render(){
     const {gameTable,players } = this.props

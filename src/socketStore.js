@@ -26,5 +26,40 @@ socket.on(Events.ON_ROOMDATA_UPDATE, function(data){
   //update game
   //update players
 })
+socket.on(Events.BROADCAST, function(data){
+  let query=data.query;
+  if(query && query.service=='player'){
+    //get state
+    let data=store.players;
+    //update state
+    switch (query.action) {
+      case 'add':
+        for(let i=0; i< data.length; i++){
+          if(data[i].id== query.data.id){
+            return;
+          }
+        }
+        data.push(roomData.query.data)
+        break;
+      default:
+
+    }
+    //save update
+    dispatch(updatePlayers(data));
+  }
+  if(query && query.service == 'game'){
+    let data=store.game
+    let palyers = store.players
+    switch (query.action) {
+      case 'start':
+
+
+        break;
+      default:
+
+    }
+  }
+
+})
 
 export default socket;
