@@ -17,9 +17,7 @@ export const Events =  {
   ON_ROOM_JOIN : "Get_Room"
 }
 export const Actions = {
-  new_user: "new_user",
   on_user_update : "on_user_update",
-  get_room : "get_room",
   on_room_creation: "on_room_creation",
   on_roomdata_update:"on_roomdata_update",
   on_room_join:"on_room_join",
@@ -27,6 +25,7 @@ export const Actions = {
   init_game:"init_game",
   remove_top:"remove_top",
   deal_cards:"deal_cards",
+  //this 2 method will overwrite all data
   update_table:"update_table",
   update_players:"update_players"
 
@@ -37,14 +36,8 @@ export const Actions = {
 /*
  * action creators
  */
-export function getNewUserByName(name){
-  return { type: Actions.new_user, data:{name}}
-}
 export function onUserDataUpdate(data){
   return { type: Actions.on_user_update, data }
-}
-export function getRoom(data){
-  return { type: Actions.get_room, data}
 }
 export function initiateGame(){
   return { type: Actions.init_game}

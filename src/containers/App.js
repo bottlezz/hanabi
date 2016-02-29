@@ -3,7 +3,8 @@ import { connect } from 'react-redux'
 import { getNewUserByName, addTodo, completeTodo, setVisibilityFilter, VisibilityFilters } from '../actions'
 import Room from './Room'
 import SingleInputWithButton from "../components/SingleInputWithButton"
-
+import socket from '../socketStore'
+import {Events} from '../actions'
 
 class App extends Component {
   render() {
@@ -19,7 +20,7 @@ class App extends Component {
         submit:"Start"
       }
       userLogin = (<SingleInputWithButton meta={meta}
-        onButtonClick={text =>dispatch(getNewUserByName(text))}>
+        onButtonClick={text =>socket.emit(Events.GET_NEW_USER, {name:text})}>
       </SingleInputWithButton>)
     }
     return (

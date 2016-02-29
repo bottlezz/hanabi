@@ -1,3 +1,8 @@
+export const gameStages = {
+  gamePrepare: 'game_prepare',
+  gameOn : 'game_on',
+  gameOver : 'game_over'
+};
 
 export class Card{
   constructor(color,number){
@@ -19,11 +24,19 @@ export class Hand{
     this.cards.splice(index,1);
   }
 }
-export class player{
+export class Player{
   constructor(){
     this.id="";
     this.displayName="";
     this.status=0;
-    this.hand=new Hand();
+    this.hand=[];
+  }
+}
+export class GameTable{
+  constructor(){
+    this.cardDeck=[];
+    this.discardDeck=[];
+    this.playedCard=[];
+    this.status = 0;
   }
 }

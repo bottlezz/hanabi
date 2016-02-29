@@ -1,74 +1,65 @@
 import React, { Component, PropTypes } from 'react'
 import {updatePlayers,initiateGame} from '../actions'
-import {PlayerService, GameService} from '../hanabi/gameServices'
+import {playerService, gameService} from '../hanabi/gameServices'
+import {gameStages} from "../hanabi/models"
 
 export default class Game extends Component {
+
   render(){
-    const {gameTable,players } = this.props
+    const {gameTable,players } = this.props;
+    var preStage = (<div>
+      <button onClick={this.ready.bind(this)}>Ready</button>
+      <button onClick={this.start.bind(this)}>Start</button>
+    </div>);
+    var playStage = (<div></div>);
+    var waitStage = (<div></div>);
+    var endStage = (<div></div>);
+    var gameStage=(<div></div>);
+    if(gameTable.stage == gameStages.gamePrepare) currentStage = preStage;
+    switch(gameTable.stage){
+      case gameStages.gamePrepare:
+        gameStage = (<gamePrepareView />);
+        break;
+      //case gameStages.gameOn
+    }
     return (
       <div>
         <h3>Game</h3>
         <span>remaining:{gameTable.cardDeck?gameTable.cardDeck.length:'N/A'}</span>
-        <span></span>
-        <p>
-          <button onClick={this.ready.bind(this)}>Ready</button>
-          <button onClick={this.start.bind(this)}>Start</button>
-        </p>
+        {gameStage}
+
       </div>
     )
   }
   ready(){
-    console.log(this);
-     const { dispatch,user,room,gameTable,players } = this.props
-     console.log("Ready");
-     var player = {id:user.userId, displayName:user.name, status:0 , hand:[]}
-     var roomData={
-       query:{service:'player', action:'add', data:player}
-     }
 
-     ///for local test
-     let query=roomData.query;
-     if(query && query.service=='player'){
-       //get state
-       let data=players;
-       //update state
-       switch (query.action) {
-         case 'add':
-           for(let i=0; i< data.length; i++){
-             if(data[i].id== query.data.id){
-               return;
-             }
-           }
-           data.push(roomData.query.data)
-           break;
-         default:
+    const { user } = this.props;
+    console.log("Ready");
 
-       }
-       //save update
-       dispatch(updatePlayers(data));
-     }
-
+    var player = {id:user.userId, displayName:user.name, status:0 , hand:[]};
+    var roomData={
+      query:{service:'player', action:'add', data:player}
+    };
+    playerService.addPlayer(player);
   }
+  //start button handler, this is not realted to game logic
   start(){
-    const { dispatch,user,room,gameTable,players } = this.props
-    console.log(this.props.gameTable);
-    //console.log("start");
-    dispatch(initiateGame());
-    console.log(this.props.gameTable);
+    const { user, gameTable}=this.props;
     //emit deck;
     //deal cards for each player
+    let table=gameTable;
+    table.cardDeck = gameService.createDeck();
+    console.log(gameTable);
 
-    let numOfPlayers = players.length
-    let cardLimit =3
-    if( numOfPlayers > 3)cardLimit =4
+    var gameStartQuery={service:'game',action:'gameStart', table};
+    //send query;
+    var setUserQuery = {service:'player', action:'setActivePlayer', id:user.userId}
+    //for local test.
+    gameService.startGame(table);
+    playerService.setActivePlayer(user.userId);
 
-    for(let i =0;i< numOfPlayers; i++){
-       for(let j=0;j< cardLimit;j++){
 
-       }
-    }
-    var query={service:'game',action:'overwrite', gameTable};
-    console.log(this.props.gameTable);
+
   }
   // addPlayer(player){
   //   //actually, this should be called in socket store.
@@ -89,5 +80,26 @@ export default class Game extends Component {
   draw(){
     console.log("draw");
     //return this.cardDeck.pop();
+  }
+}
+class gamePrepareView extends Component{
+  getInitialState(){
+    return {isReady:false}
+  }
+  render(){
+    return ( <p>
+      {this.state.isReady?
+          (<button onClick={e=>handleStartClick(e)}>Start</button>):
+          (<button onClick={e=>handleReadyClick(e)}>Ready</button>) }
+
+
+    </p>)
+  }
+  handleReadyClick(e){
+    this.setState({isReady:true});
+    this.props.onReadyClick();
+  }
+  handleStartClick(e){
+    this.props.onStartClick();
   }
 }
