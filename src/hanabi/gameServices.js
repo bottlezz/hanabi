@@ -1,23 +1,23 @@
 import store from '../reduxStore'
 import {updatePlayers,initiateGame} from '../actions'
 
-export const ServiceCall{
+export const ServiceCall = {
   game_start: 'start'
-}
+};
 
 export class PlayerService{
   constructor(){
-    this.store = store;
+    this.store = store
   }
   add(player){
     let players = store.players;
     for(let i=0; i< players.length; i++){
       if(players[i].id== player.id){
-        return;
+        return
       }
     }
-    players.push(player)
-    dispatch(updatePlayers(players))
+    players.push(player);
+    store.dispatch(updatePlayers(players))
   }
 }
 export class GameService{
@@ -25,6 +25,6 @@ export class GameService{
     this.store = store;
   }
   startGame(data){
-
+    //store.dispatch()
   }
 }

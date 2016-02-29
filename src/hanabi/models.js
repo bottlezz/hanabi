@@ -13,7 +13,7 @@ export class Hand{
   }
   add(card){
     this.cards.push(card);
-    return;
+
   }
   remove(index){
     this.cards.splice(index,1);
