@@ -5,7 +5,7 @@ import Room from './Room'
 import SingleInputWithButton from "../components/SingleInputWithButton"
 import socket from '../socketStore'
 import {Events} from '../actions'
-
+import {onUserDataUpdate,onRoomCreation} from '../actions'
 class App extends Component {
   render() {
     const { dispatch,user } = this.props
@@ -21,6 +21,10 @@ class App extends Component {
       }
       userLogin = (<SingleInputWithButton meta={meta}
         onButtonClick={text =>socket.emit(Events.GET_NEW_USER, {name:text})}>
+      </SingleInputWithButton>)
+      //for test
+      userLogin = (<SingleInputWithButton meta={meta}
+        onButtonClick={text =>dispatch(onUserDataUpdate({userId:'1',name:text}))}>
       </SingleInputWithButton>)
     }
     return (

@@ -16,16 +16,16 @@ socket.on('test',function(data){console.log(data)});
 socket.on(Events.ON_USER_CREATION, function(data){
   console.log(data);
   store.dispatch(onUserDataUpdate(data));
-})
+});
 socket.on(Events.GET_ROOM,function(data){
   console.log(data);
   store.dispatch(onRoomCreation(data))
-})
+});
 socket.on(Events.ON_ROOMDATA_UPDATE, function(data){
   //update Room
   //update game
   //update players
-})
+});
 socket.on(Events.BROADCAST, function(data){
   let query=data.query;
   if(query && query.service=='player'){

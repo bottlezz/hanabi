@@ -7,7 +7,7 @@ function user(state={},action){
   switch (action.type) {
     case Actions.on_user_update:
       console.log(action.data);
-      return Object.assign({},state,action.data)
+      return Object.assign({},state,action.data);
 
     default:
 
@@ -18,11 +18,9 @@ function user(state={},action){
 function room(state={},action){
   switch (action.type) {
     case Actions.on_room_creation:
-
       var ret=Object.assign({},state,action.data);
       console.log(ret);
-      return ret
-
+      return ret;
     default:
       return state;
 
@@ -33,7 +31,6 @@ function players(state=[],action){
   switch (action.type) {
     case Actions.update_players:
       return Object.assign([],action.data);
-
       break;
     case Actions.deal_cards:
       return [];
@@ -48,6 +45,6 @@ const godaba = combineReducers({
   room,
   gameTable,
   players
-})
+});
 
 export default godaba

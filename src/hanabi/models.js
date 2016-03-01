@@ -38,5 +38,8 @@ export class GameTable{
     this.discardDeck=[];
     this.playedCard=[];
     this.status = 0;
+    //
+    this.life = 3;
+    this.hint=8;
   }
 }

@@ -15,7 +15,7 @@ export const Events =  {
   ON_USER_UPDATE:"User_Update",
   ON_NEW_ROOM : "New_Room",
   ON_ROOM_JOIN : "Get_Room"
-}
+};
 export const Actions = {
   on_user_update : "on_user_update",
   on_room_creation: "on_room_creation",
@@ -29,7 +29,7 @@ export const Actions = {
   update_table:"update_table",
   update_players:"update_players"
 
-}
+};
 /*
  * other constants
  */
@@ -56,12 +56,4 @@ export function updatePlayers(data){
 }
 export function onRoomCreation(data){
   return { type: Actions.on_room_creation, data}
-}
-
-
-export function onRoomDataUpdate(data){
-
-}
-export function onRoomJoin(data){
-
 }

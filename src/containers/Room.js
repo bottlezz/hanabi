@@ -1,10 +1,11 @@
 import React, { Component, PropTypes } from 'react'
 import {findDOMNode} from 'react-dom'
-import {getRoom} from '../actions'
+import {getRoom,onRoomCreation} from '../actions'
 import socket from '../socketStore'
 import {Events} from '../actions'
 import SingleInputWithButton from "../components/SingleInputWithButton"
 import Game from './Game'
+
 
 export default class Room extends Component {
 
@@ -15,16 +16,22 @@ export default class Room extends Component {
       description:"please enter the Room name you want to join or create",
       submit:"Join"
     }
+    //let joinRoomView = (<SingleInputWithButton meta={joinRoomMeta} onButtonClick = {text=>socket.emit(Events.GET_ROOM , { roomId:text, userId:user.userId})}/>)
+    //TODO:for test
+    let joinRoomView = (<SingleInputWithButton meta={joinRoomMeta}
+           onButtonClick = {text => dispatch(onRoomCreation({roomId:'1',roomData:null,users:['1']}))}> </SingleInputWithButton>);
+
     if(user.userId==null){
       //TODO:will need to refine this, user can be a guest.
       return <div></div>;
     }else{
 
       if(room.roomId == null){
-        return (
-          //Display the box for join room
-          <SingleInputWithButton meta={joinRoomMeta}
-            onButtonClick = {text=>socket.emit(Events.GET_ROOM , { roomId:text, userId:user.userId})}/>)
+        return (<div>
+
+          {joinRoomView}
+          </div>)
+
       }else{
         // game logic starts here
         return (

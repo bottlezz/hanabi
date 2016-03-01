@@ -1,5 +1,7 @@
 import store from '../reduxStore'
 import {updatePlayers,initiateGame,updateTable} from '../actions'
+import {gameStages} from './models'
+import SingleInputWithButton from "../components/SingleInputWithButton"
 
 export const ServiceCall = {
   game_start: 'start'
@@ -18,6 +20,15 @@ class PlayerService{
     }
     players.push(player);
     store.dispatch(updatePlayers(players))
+  }
+  getPlayer(userId){
+    let players = store.getState().players;
+    for(let i=0; i< players.length; i++){
+      if(players[i].id== userId){
+        return players[i];
+      }
+    }
+    return null;
   }
   setActivePlayer(id){
     let players = store.getState().players;
@@ -54,13 +65,76 @@ class GameService{
       players[i].hand=[];
       for(let j=0;j< cardLimit;j++){
         let index=i*cardLimit+j;
-        players[i].hand.push(table[index]);
+        players[i].hand.push(table.cardDeck[index]);
       }
     }
     table.cardDeck.splice(0,numOfPlayers*cardLimit);
+    table.stage = gameStages.gameOn;
     store.dispatch(updatePlayers((players)));
     store.dispatch(updateTable(table));
 
+  }
+  playerPlayCard(userId, cardIndex){
+    let players = store.getState().players;
+    let table = store.getState().gameTable;
+
+
+    let currentPlayer = null;
+    for(let i=0; i< players.length; i++){
+      if(players[i].status== 1){
+        currentPlayer = players[i]
+      }
+    }
+    let playedCard = currentPlayer.hand[cardIndex];
+
+    if(this.isValidPlay(playedCard)){
+      table.playedCards.push(playedCard);
+      currentPlayer.hand.splice(cardIndex,1);
+      currentPlayer.hand.push(table.cardDeck[0]);
+      table.cardDeck.splice(0,1);
+
+    }
+
+    store.dispatch(updatePlayers((players)));
+    store.dispatch(updateTable(table));
+
+
+  }
+  playerDiscardCard(userId,cardIndex){
+    let players = store.getState().players;
+    let table = store.getState().gameTable;
+
+
+    let currentPlayer = null;
+    for(let i=0; i< players.length; i++){
+      if(players[i].status== 1){
+        currentPlayer = players[i]
+      }
+    }
+    let playedCard = currentPlayer.hand[cardIndex];
+
+
+    table.discardDeck.push(playedCard);
+    currentPlayer.hand.splice(cardIndex,1);
+    currentPlayer.hand.push(table.cardDeck[0]);
+    table.cardDeck.splice(0,1);
+
+
+
+    store.dispatch(updatePlayers((players)));
+    store.dispatch(updateTable(table));
+
+  }
+  isValidPlay(card){
+    return true;
+  }
+  getActivePlayer(){
+    let players = store.getState().players;
+    for(let i=0; i< players.length; i++){
+      if(players[i].status== 1){
+        return players[i]
+      }
+    }
   }
   createDeck(){
     let cardDeck = [];

@@ -25,7 +25,7 @@ export default function gameTable(state={
 
       //draw card, and update updated player list
     default:
-    return {};
+    return state;
 
   }
 }
