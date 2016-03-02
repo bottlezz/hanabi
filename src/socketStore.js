@@ -3,6 +3,9 @@ import {Events} from './actions'
 import {onUserDataUpdate,onRoomCreation} from './actions'
 import store from "./reduxStore"
 import {socketServerUrl} from './socketServerUrl'
+import {playerService, gameService} from './hanabi/gameServices'
+
+
 const socket=io(socketServerUrl);
 
 console.log(socketServerUrl);
@@ -27,19 +30,15 @@ socket.on(Events.ON_ROOMDATA_UPDATE, function(data){
   //update players
 });
 socket.on(Events.BROADCAST, function(data){
-  let query=data.query;
+  console.log(data);
+  let query=data;
   if(query && query.service=='player'){
-    //get state
-    let data=store.players;
-    //update state
+
     switch (query.action) {
       case 'add':
-        for(let i=0; i< data.length; i++){
-          if(data[i].id== query.data.id){
-            return;
-          }
-        }
-        data.push(roomData.query.data)
+
+          console.log(query.data)
+        playerService.addPlayer(query.data);
         break;
       default:
 
@@ -52,6 +51,7 @@ socket.on(Events.BROADCAST, function(data){
     let palyers = store.players
     switch (query.action) {
       case 'start':
+        gameService.startGame(query.data);
 
 
         break;

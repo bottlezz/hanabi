@@ -16,10 +16,10 @@ export default class Room extends Component {
       description:"please enter the Room name you want to join or create",
       submit:"Join"
     }
-    //let joinRoomView = (<SingleInputWithButton meta={joinRoomMeta} onButtonClick = {text=>socket.emit(Events.GET_ROOM , { roomId:text, userId:user.userId})}/>)
+    let joinRoomView = (<SingleInputWithButton meta={joinRoomMeta} onButtonClick = {text=>socket.emit(Events.GET_ROOM , { roomId:text, userId:user.userId})}/>)
     //TODO:for test
-    let joinRoomView = (<SingleInputWithButton meta={joinRoomMeta}
-           onButtonClick = {text => dispatch(onRoomCreation({roomId:'1',roomData:null,users:['1']}))}> </SingleInputWithButton>);
+    // let joinRoomView = (<SingleInputWithButton meta={joinRoomMeta}
+    //        onButtonClick = {text => dispatch(onRoomCreation({roomId:'1',roomData:null,users:['1']}))}> </SingleInputWithButton>);
 
     if(user.userId==null){
       //TODO:will need to refine this, user can be a guest.

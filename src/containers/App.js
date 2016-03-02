@@ -23,9 +23,9 @@ class App extends Component {
         onButtonClick={text =>socket.emit(Events.GET_NEW_USER, {name:text})}>
       </SingleInputWithButton>)
       //for test
-      userLogin = (<SingleInputWithButton meta={meta}
-        onButtonClick={text =>dispatch(onUserDataUpdate({userId:'1',name:text}))}>
-      </SingleInputWithButton>)
+      // userLogin = (<SingleInputWithButton meta={meta}
+      //   onButtonClick={text =>dispatch(onUserDataUpdate({userId:'1',name:text}))}>
+      // </SingleInputWithButton>)
     }
     return (
       <div>

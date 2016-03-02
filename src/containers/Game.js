@@ -2,6 +2,8 @@ import React, { Component, PropTypes } from 'react'
 import {updatePlayers,initiateGame} from '../actions'
 import {playerService, gameService} from '../hanabi/gameServices'
 import {gameStages} from "../hanabi/models"
+import {Events} from '../actions'
+import socket from '../socketStore'
 import SingleInputWithButton from "../components/SingleInputWithButton"
 
 export default class Game extends Component {
@@ -38,12 +40,12 @@ export default class Game extends Component {
     const { user } = this.props;
     console.log("Ready");
 
-    var player = {id:user.userId, displayName:user.name, status:0 , hand:[]};
-    var roomData={
-      query:{service:'player', action:'add', data:player}
-    };
+    let player = {id:user.userId, displayName:user.name, status:0 , hand:[]};
+    let userReadyQuery ={service:'player', action:'add', data:player}
+
+    socket.emit(Events.BROADCAST,userReadyQuery );
     //TODO:for local test
-    playerService.addPlayer(player);
+    //playerService.addPlayer(player);
   }
   //start button handler, this is not realted to game logic
   start(){
@@ -54,9 +56,11 @@ export default class Game extends Component {
     table.cardDeck = gameService.createDeck();
     console.log(gameTable);
 
-    var gameStartQuery={service:'game',action:'gameStart', table};
+    var gameStartQuery={service:'game',action:'gameStart', data:table};
     //send query;
-    var setUserQuery = {service:'player', action:'setActivePlayer', id:user.userId}
+    var setActiveUserQuery = {service:'player', action:'setActivePlayer', data:user.userId}
+    socket.emit(Events.BROADCAST, gameStartQuery);
+    socket.emit(Events.BROADCAST, setActiveUserQuery);
 
     //TODO:for local test.
     gameService.startGame(table);
