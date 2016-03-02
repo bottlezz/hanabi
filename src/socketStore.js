@@ -30,7 +30,7 @@ socket.on(Events.ON_ROOMDATA_UPDATE, function(data){
   //update players
 });
 socket.on(Events.BROADCAST, function(data){
-  console.log(data);
+ // console.log(data);
   let query=data;
   if(query && query.service=='player'){
 
@@ -43,16 +43,23 @@ socket.on(Events.BROADCAST, function(data){
       default:
 
     }
-    //save update
-    dispatch(updatePlayers(data));
   }
   if(query && query.service == 'game'){
-    let data=store.game
-    let palyers = store.players
-    switch (query.action) {
-      case 'start':
-        gameService.startGame(query.data);
+    console.log(query.action)
+    console.log(query.data);
 
+    switch (query.action) {
+      case 'gameStart':
+          //TODO: make sure this two action are in order.
+        playerService.updateAll(query.data.players);
+
+        gameService.startGame(query.data.gameTable);
+        break;
+      case 'playerDiscardCard':
+        gameService.playerDiscardCard(query.data.userId,query.data.cardIndex);
+        break;
+      case 'playerPlayCard':
+        gameService.playerPlayCard(query.data.userId,query.data.cardIndex);
 
         break;
       default:

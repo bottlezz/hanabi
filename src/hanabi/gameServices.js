@@ -11,6 +11,9 @@ class PlayerService{
   constructor(){
 
   }
+  updateAll(players){
+    store.dispatch(updatePlayers(players))
+  }
   addPlayer(player){
     let players = store.getState().players;
     for(let i=0; i< players.length; i++){
@@ -54,6 +57,7 @@ class GameService{
 
   }
   startGame(data){
+    console.log("startGame")
     let table=data;
     let players=store.getState().players;
 
@@ -80,9 +84,11 @@ class GameService{
 
 
     let currentPlayer = null;
+    let nextPlayer = null;
     for(let i=0; i< players.length; i++){
       if(players[i].status== 1){
-        currentPlayer = players[i]
+        currentPlayer = players[i];
+        nextPlayer = players[(i+1)%players.length];
       }
     }
     let playedCard = currentPlayer.hand[cardIndex];
@@ -91,9 +97,12 @@ class GameService{
       table.playedCards.push(playedCard);
       currentPlayer.hand.splice(cardIndex,1);
       currentPlayer.hand.push(table.cardDeck[0]);
+      currentPlayer.status = 0;
+      nextPlayer.status = 1;
       table.cardDeck.splice(0,1);
 
     }
+    console.log(players);
 
     store.dispatch(updatePlayers((players)));
     store.dispatch(updateTable(table));
@@ -106,9 +115,11 @@ class GameService{
 
 
     let currentPlayer = null;
+    let nextPlayer = null;
     for(let i=0; i< players.length; i++){
       if(players[i].status== 1){
-        currentPlayer = players[i]
+        currentPlayer = players[i];
+        nextPlayer = players[(i+1)%players.length];
       }
     }
     let playedCard = currentPlayer.hand[cardIndex];
@@ -117,7 +128,10 @@ class GameService{
     table.discardDeck.push(playedCard);
     currentPlayer.hand.splice(cardIndex,1);
     currentPlayer.hand.push(table.cardDeck[0]);
+    currentPlayer.status = 0;
+    nextPlayer.status = 1;
     table.cardDeck.splice(0,1);
+    console.log(players);
 
 
 

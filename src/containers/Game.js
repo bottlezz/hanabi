@@ -37,34 +37,35 @@ export default class Game extends Component {
   }
   ready(){
 
-    const { user } = this.props;
+    const { user ,room} = this.props;
     console.log("Ready");
 
     let player = {id:user.userId, displayName:user.name, status:0 , hand:[]};
     let userReadyQuery ={service:'player', action:'add', data:player}
 
-    socket.emit(Events.BROADCAST,userReadyQuery );
+    socket.emit(Events.BROADCAST, {roomId:room.roomId, userId:user.userId, data:userReadyQuery} );
     //TODO:for local test
     //playerService.addPlayer(player);
   }
   //start button handler, this is not realted to game logic
   start(){
-    const { user, gameTable}=this.props;
+    const { user,room, gameTable,players}=this.props;
     //emit deck;
     //deal cards for each player
     let table=gameTable;
     table.cardDeck = gameService.createDeck();
     console.log(gameTable);
+    playerService.setActivePlayer(user.userId);
 
-    var gameStartQuery={service:'game',action:'gameStart', data:table};
+    var gameStartQuery={service:'game',action:'gameStart', data:{gameTable:table,players:players}};
     //send query;
-    var setActiveUserQuery = {service:'player', action:'setActivePlayer', data:user.userId}
-    socket.emit(Events.BROADCAST, gameStartQuery);
-    socket.emit(Events.BROADCAST, setActiveUserQuery);
+
+    socket.emit(Events.BROADCAST, {roomId:room.roomId, userId:user.userId, data:gameStartQuery});
+    //socket.emit(Events.BROADCAST, {roomId:room.roomId, userId:user.userId, data:setActiveUserQuery});
 
     //TODO:for local test.
-    gameService.startGame(table);
-    playerService.setActivePlayer(user.userId);
+    //gameService.startGame(table);
+    //playerService.setActivePlayer(user.userId);
 
   }
 
@@ -111,6 +112,7 @@ class GamePlayView extends Component{
       onDiscardClick={index=>this.discard(index)}/>)
     }
     let myself=playerService.getPlayer(user.userId);
+    if(myself==null)return (<div>game is in progress</div>)
     return (<div>
       <p>My card </p>
 
@@ -120,21 +122,23 @@ class GamePlayView extends Component{
     </div>)
   }
   play(index){
-    const { user, gameTable}=this.props;
-    let query = {service:'game', action:'playCard', data:{userId:user.userId, cardIndex:index} };
+    const { user, room}=this.props;
+    let query = {service:'game', action:'playerPlayCard', data:{userId:user.userId, cardIndex:index} };
+    socket.emit(Events.BROADCAST, {roomId:room.roomId, userId:user.userId, data:query});
 
     //TODO:for local test
-    console.log("play"+index)
-    gameService.playerPlayCard(user.userId,index);
+   // console.log("play"+index)
+    //gameService.playerPlayCard(user.userId,index);
 
   }
   discard(index){
-    const { user, gameTable}=this.props;
+    const { user, room }=this.props;
 
-    let query = {service:'game', action:'playCard', data:{userId:user.userId, cardIndex:index} };
-    console.log("discard")
+    let query = {service:'game', action:'playerDiscardCard', data:{userId:user.userId, cardIndex:index} };
+    console.log("discard");
+    socket.emit(Events.BROADCAST, {roomId:room.roomId, userId:user.userId, data:query});
     //TODO:for local test
-    gameService.playerDiscardCard(user.userId,index);
+    //gameService.playerDiscardCard(user.userId,index);
   }
 
 }
