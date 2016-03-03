@@ -18,7 +18,7 @@ export default class Game extends Component {
 
     switch(gameTable.stage){
       case gameStages.gamePrepare:
-        gameStage = (<GamePrepareView
+        gameStage = (<GamePrepareView {...this.props}
             onReadyClick={this.ready.bind(this)}
             onStartClick={this.start.bind(this)}/>);
         break;
@@ -84,12 +84,20 @@ class GamePrepareView extends Component{
   constructor(props){
     super(props);
     this.state = {isReady:false};
+
   }
   render(){
+    const {user,room} = this.props;
+
+    let isHost = (room.users[0]==user.userId);
+    let readyButton = null;
+    let startButton = null;
+    console.log("hello");
+    if(!this.state.isReady)readyButton =(<button onClick={e=>this.handleReadyClick(e)}>Ready</button>);
+    if(this.state.isReady && isHost) startButton =  (<button onClick={e=>this.handleStartClick(e)}>Start</button>);
     return ( <p>
-      {this.state.isReady?
-          (<button onClick={e=>this.handleStartClick(e)}>Start</button>):
-          (<button onClick={e=>this.handleReadyClick(e)}>Ready</button>) }
+      {readyButton}
+      {startButton}
 
 
     </p>)
@@ -104,6 +112,7 @@ class GamePrepareView extends Component{
 }
 class GamePlayView extends Component{
   render(){
+
     const { user, gameTable}=this.props;
 
     let playerOption = (<div></div>)
