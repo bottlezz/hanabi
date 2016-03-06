@@ -19,6 +19,10 @@ function room(state={},action){
   switch (action.type) {
     case Actions.on_room_creation:
       var ret=Object.assign({},state,action.data);
+      console.log("new room"+ret.roomId);
+      return ret;
+    case Actions.on_roomdata_update:
+      let ret=Object.assign({},state,action.data);
       console.log(ret);
       return ret;
     default:

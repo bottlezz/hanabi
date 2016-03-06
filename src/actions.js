@@ -36,6 +36,9 @@ export const Actions = {
 /*
  * action creators
  */
+export function onRoomDataUpdate(data){
+  return {type:Actions.on_roomdata_update, data}
+}
 export function onUserDataUpdate(data){
   return { type: Actions.on_user_update, data }
 }

@@ -36,8 +36,9 @@ export class GameTable{
   constructor(){
     this.cardDeck=[];
     this.discardDeck=[];
-    this.playedCard=[];
+    this.playedCards=[];
     this.status = 0;
+    this.stage=gameStages.gamePrepare
     //
     this.life = 3;
     this.hint=8;

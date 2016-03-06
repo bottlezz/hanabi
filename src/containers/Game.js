@@ -5,7 +5,7 @@ import {gameStages} from "../hanabi/models"
 import {Events} from '../actions'
 import socket from '../socketStore'
 import SingleInputWithButton from "../components/SingleInputWithButton"
-
+import {Grid,Row,Col} from 'react-bootstrap'
 export default class Game extends Component {
 
   render(){
@@ -113,7 +113,7 @@ class GamePrepareView extends Component{
 class GamePlayView extends Component{
   render(){
 
-    const { user, gameTable}=this.props;
+    const { user, gameTable,players}=this.props;
 
     let playerOption = (<div></div>)
     if(playerService.getActivePlayer().id==user.userId){
@@ -121,12 +121,23 @@ class GamePlayView extends Component{
       onDiscardClick={index=>this.discard(index)}/>)
     }
     let myself=playerService.getPlayer(user.userId);
-    if(myself==null)return (<div>game is in progress</div>)
+    if(myself==null)return (<div>game is in progress</div>);
+
+    var renderPlayers = function(p){
+      if(p.id!=user.userId) return (<PlayerHand hand={p.hand} />)
+      return;
+    }
+
     return (<div>
       <p>My card </p>
 
         <PlayerHand hand={myself.hand} />
+      <p>Others</p>
+        {players.map(renderPlayers)}
+      <p>Table</p>
+      <TableView {...this.props}/>
       {playerOption}
+
 
     </div>)
   }
@@ -150,6 +161,37 @@ class GamePlayView extends Component{
     //gameService.playerDiscardCard(user.userId,index);
   }
 
+}
+class TableView extends Component {
+  //played item, and discards.
+  render(){
+    const{gameTable}=this.props
+    var renderCard = function(item,index){
+      if(item == null)return
+      return <li key={index}>{item.number},{item.color}</li>
+    }
+    return(
+        <Row>
+          <Col xs={3}>
+            <div>Card Remains</div>
+            <div>{gameTable.cardDeck.length}</div>
+
+          </Col>
+          <Col xs={3}>
+            <div>Hint Point</div>
+            <div>{gameTable.hint}</div>
+
+          </Col>
+          <Col xs={3}>
+            <div>Life Point</div>
+            <div>{gameTable.life}</div>
+
+          </Col>
+
+        </Row>
+    )
+
+  }
 }
 class PlayerHand extends Component {
   render(){

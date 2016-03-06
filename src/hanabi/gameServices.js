@@ -74,6 +74,8 @@ class GameService{
     }
     table.cardDeck.splice(0,numOfPlayers*cardLimit);
     table.stage = gameStages.gameOn;
+    table.life=3;
+    table.hint=8;
     store.dispatch(updatePlayers((players)));
     store.dispatch(updateTable(table));
 
@@ -95,14 +97,30 @@ class GameService{
 
     if(this.isValidPlay(playedCard)){
       table.playedCards.push(playedCard);
-      currentPlayer.hand.splice(cardIndex,1);
-      currentPlayer.hand.push(table.cardDeck[0]);
-      currentPlayer.status = 0;
-      nextPlayer.status = 1;
-      table.cardDeck.splice(0,1);
-
+      if(playedCard == 5 && table.hint<8)table.hint++;
+    }else{
+      table.life--;
+      table.discardDeck.push(playedCard);
     }
-    console.log(players);
+
+    currentPlayer.hand.splice(cardIndex,1);
+    if(table.cardDeck.length>0){
+
+      currentPlayer.hand.push(table.cardDeck[0]);
+      nextPlayer.status = 1;
+      currentPlayer.status = 0;
+      table.cardDeck.splice(0,1);
+    }else{
+      currentPlayer.status = 2;
+      if(nextPlayer.status = 2){
+        //gameOver
+        console.log("gameOver");
+
+      }else{
+        nextPlayer.status = 1;
+      }
+    }
+
 
     store.dispatch(updatePlayers((players)));
     store.dispatch(updateTable(table));
@@ -123,15 +141,29 @@ class GameService{
       }
     }
     let playedCard = currentPlayer.hand[cardIndex];
+    if(table.hint<8){
+      table.hint++;
+    }
 
 
     table.discardDeck.push(playedCard);
     currentPlayer.hand.splice(cardIndex,1);
-    currentPlayer.hand.push(table.cardDeck[0]);
-    currentPlayer.status = 0;
-    nextPlayer.status = 1;
-    table.cardDeck.splice(0,1);
-    console.log(players);
+    if(table.cardDeck.length>0){
+
+      currentPlayer.hand.push(table.cardDeck[0]);
+      nextPlayer.status = 1;
+      currentPlayer.status = 0;
+      table.cardDeck.splice(0,1);
+    }else{
+      currentPlayer.status = 2;
+      if(nextPlayer.status = 2){
+        //gameOver
+        console.log("gameOver");
+
+      }else{
+        nextPlayer.status = 1;
+      }
+    }
 
 
 
@@ -140,7 +172,18 @@ class GameService{
 
   }
   isValidPlay(card){
-    return true;
+    let table = store.getState().gameTable;
+    let playedCards = table.playedCards;
+    let isSuccessive=false;
+    if(card.number == 1) isSuccessive = true;
+    for(let i=0;i<playedCards.length;i++){
+      if(playedCards[i].color == card.color){
+        if(playedCards[i].number == card.number)return false;
+        if(playedCards[i].number == (card.number-1))isSuccessive = true;
+
+      }
+    }
+    return isSuccessive;
   }
   getActivePlayer(){
     let players = store.getState().players;

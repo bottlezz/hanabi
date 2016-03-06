@@ -6,36 +6,41 @@ import SingleInputWithButton from "../components/SingleInputWithButton"
 import socket from '../socketStore'
 import {Events} from '../actions'
 import {onUserDataUpdate,onRoomCreation} from '../actions'
+import {Grid,Row,Col} from 'react-bootstrap'
 class App extends Component {
   render() {
     const { dispatch,user } = this.props
     //TODO, cookie support, get user from cookie
     var userLogin="";
     if(user.userId){
-      userLogin = (<div>Hello, <span>{user.name}</span></div>)
+      userLogin = (<Row><Col xs={12}>Hello, <span>{user.name}</span></Col></Row>)
     }else{
       let meta={
         label:"Name",
         description:"To start, enter a display name",
         submit:"Start"
       }
-      userLogin = (<SingleInputWithButton meta={meta}
+      userLogin = (<Row>
+        <Col xs={12}>
+        <SingleInputWithButton meta={meta}
         onButtonClick={text =>socket.emit(Events.GET_NEW_USER, {name:text})}>
-      </SingleInputWithButton>)
+      </SingleInputWithButton></Col></Row>)
       //for test
       // userLogin = (<SingleInputWithButton meta={meta}
       //   onButtonClick={text =>dispatch(onUserDataUpdate({userId:'1',name:text}))}>
       // </SingleInputWithButton>)
     }
     return (
-      <div>
+      <Grid>
         {userLogin}
 
-        <div>
-          <Room {...this.props}></Room>
-        </div>
+        <Row>
+          <Col xs={12}>
+            <Room {...this.props}></Room>
+          </Col>
+        </Row>
 
-      </div>
+      </Grid>
     );
   }
 }

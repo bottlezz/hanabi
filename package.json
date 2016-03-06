@@ -1,7 +1,7 @@
 {
-  "name": "react-transform-boilerplate",
+  "name": "hanabi",
   "version": "1.0.0",
-  "description": "A new Webpack boilerplate with hot reloading React components, and error handling on module and component level.",
+  "description": "a websocket version of hanabi",
   "scripts": {
     "clean": "rimraf dist",
     "build:webpack": "cross-env NODE_ENV=production webpack --config webpack.config.prod.js",
@@ -22,8 +22,8 @@
     "babel",
     "react-transform"
   ],
-  "author": "Dan Abramov <dan.abramov@me.com> (http://github.com/gaearon)",
-  "license": "CC0-1.0",
+  "author": "Gregory Zhou",
+  "license": "",
   "bugs": {
     "url": "https://github.com/gaearon/react-transform-boilerplate/issues"
   },
@@ -49,6 +49,7 @@
   },
   "dependencies": {
     "react": "^0.14.3",
+    "react-bootstrap": "^0.28.3",
     "react-dom": "^0.14.3",
     "react-redux": "^4.0.6",
     "redux": "^3.0.5",

@@ -1,6 +1,6 @@
 import io from 'socket.io-client'
 import {Events} from './actions'
-import {onUserDataUpdate,onRoomCreation} from './actions'
+import {onUserDataUpdate,onRoomCreation,onRoomDataUpdate} from './actions'
 import store from "./reduxStore"
 import {socketServerUrl} from './socketServerUrl'
 import {playerService, gameService} from './hanabi/gameServices'
@@ -26,6 +26,7 @@ socket.on(Events.GET_ROOM,function(data){
 });
 socket.on(Events.ON_ROOMDATA_UPDATE, function(data){
   //update Room
+  store.dispatch(onRoomDataUpdate(data))
   //update game
   //update players
 });
