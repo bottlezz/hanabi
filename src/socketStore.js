@@ -10,12 +10,6 @@ const socket=io(socketServerUrl);
 
 console.log(socketServerUrl);
 socket.on('test',function(data){console.log(data)});
-//socket.on("New_User",function(data){console.log(data)});
-
-/*
- *
- */
-
 socket.on(Events.ON_USER_CREATION, function(data){
   console.log(data);
   store.dispatch(onUserDataUpdate(data));
@@ -42,7 +36,6 @@ socket.on(Events.BROADCAST, function(data){
         playerService.addPlayer(query.data);
         break;
       default:
-
     }
   }
   if(query && query.service == 'game'){
@@ -61,6 +54,8 @@ socket.on(Events.BROADCAST, function(data){
         break;
       case 'playerPlayCard':
         gameService.playerPlayCard(query.data.userId,query.data.cardIndex);
+      case 'gameOver':
+        gameService.gameOver();
 
         break;
       default:

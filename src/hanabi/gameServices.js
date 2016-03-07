@@ -172,6 +172,10 @@ class GameService{
       if(nextPlayer.status = 2){
         //gameOver
         console.log("gameOver");
+        var gameOverQuery={service:'game',action:'gameStart', data:{gameTable:table,players:players}};
+        //send query;
+
+        socket.emit(Events.BROADCAST, {roomId:room.roomId, userId:user.userId, data:gameOverQuery});
 
       }else{
         nextPlayer.status = 1;
@@ -197,6 +201,11 @@ class GameService{
       }
     }
     return isSuccessive
+  }
+  gameOver(){
+    let table = store.getState().gameTable;
+    table.stage = gameStages.gameOver;
+
   }
 
   getActivePlayer(){
