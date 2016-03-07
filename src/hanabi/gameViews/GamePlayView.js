@@ -5,36 +5,39 @@ import {Events} from '../../actions'
 import socket from '../../socketStore'
 import SingleInputWithButton from "../../components/SingleInputWithButton"
 import {Grid,Row,Col} from 'react-bootstrap'
+import PlayerHandView from './PlayerHandView'
 
 export default class GamePlayView extends Component{
     render(){
         const { user, gameTable,players,room}=this.props;
-        let playerOption = (<div></div>)
-        if(playerService.getActivePlayer().id==user.userId){
-            if(gameTable.life <= 0 ){
+        //let playerOption = (<div></div>)
+        let myself=playerService.getPlayer(user.userId);
+        if(myself==null)return (<div>game is in progress</div>);
+        if(playerService.getActivePlayer().id==myself.id){
+            if(gameTable.life <= 0 || myself.status == 3){
                 //game over
                 var gameOverQuery={service:'game',action:'gameOver'};
                 socket.emit(Events.BROADCAST, {roomId:room.roomId, userId:user.userId, data:gameOverQuery});
 
             }
-            playerOption = (<PlayerOption onPlayClick={index=>this.play(index-1)}
-                                          onDiscardClick={index=>this.discard(index-1)}/>)
+          //  playerOption = (<PlayerOption onPlayClick={index=>this.play(index-1)}
+                                    //      onDiscardClick={index=>this.discard(index-1)}/>)
         }
-        let myself=playerService.getPlayer(user.userId);
-        if(myself==null)return (<div>game is in progress</div>);
+        let message = (<p>now is {playerService.getActivePlayer().displayName}'s turn</p>)
 
-        var renderPlayers = function(p, index){
-            if(p.id!=user.userId) return (<PlayerHand hand={p.hand} key={index} />)
+
+        var renderPlayers = function(p){
+            if(p.id!=user.userId) return (<PlayerHandView hand={p.hand} key={p.id} />)
             return;
         };
-
 
         return (
             <Row>
                 <Col xs={12}>
+                    {message}
                     <Row><Col xs={12}>
                         <h4>My card </h4>
-                        <PlayerHand hand={myself.hand} />
+                        <PlayerHandView hand={myself.hand} isSelf={true} play={ idx => this.play(idx)} discard={idx => this.discard(idx)}/>
                     </Col></Row>
                     <Row><Col xs={12}>
                         <h4>Others</h4>
@@ -44,7 +47,7 @@ export default class GamePlayView extends Component{
                         <h4>Table</h4>
                         <TableView {...this.props}/>
                     </Col></Row>
-                    {playerOption}
+
                 </Col>
 
             </Row>)

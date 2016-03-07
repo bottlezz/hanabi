@@ -11,16 +11,19 @@ const socket=io(socketServerUrl);
 console.log(socketServerUrl);
 socket.on('test',function(data){console.log(data)});
 socket.on(Events.ON_USER_CREATION, function(data){
-  console.log(data);
+  console.log("socket create user");
   store.dispatch(onUserDataUpdate(data));
 });
 socket.on(Events.GET_ROOM,function(data){
-  console.log(data);
+  console.log("socket get room");
   store.dispatch(onRoomCreation(data))
 });
 socket.on(Events.ON_ROOMDATA_UPDATE, function(data){
   //update Room
+  console.log("socket rommdata update");
+  console.log(data)
   store.dispatch(onRoomDataUpdate(data))
+;
   //update game
   //update players
 });

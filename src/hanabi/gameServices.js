@@ -97,7 +97,7 @@ class GameService{
 
     if(this.isValidPlay(playedCard)){
       if(playedCard.number > 1){
-        for(let i=1;i<table.playedCards.length;i++){
+        for(let i=0;i<table.playedCards.length;i++){
           if(table.playedCards[i].color == playedCard.color){
             //remove previous card and replaced by the new one.
             table.playedCards.splice(i,1,playedCard);
@@ -120,20 +120,12 @@ class GameService{
 
       currentPlayer.hand.push(table.cardDeck[0]);
       currentPlayer.status = 0;
-      nextPlayer.status = 1;
+      nextPlayer.status =1;
 
       table.cardDeck.splice(0,1);
     }else{
       currentPlayer.status = 2;
-      if(nextPlayer.status = 2){
-        //gameOver
-        console.log("gameOver");
-
-
-
-      }else{
-        nextPlayer.status = 1;
-      }
+      nextPlayer.status++;
     }
 
 
