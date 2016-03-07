@@ -54,6 +54,7 @@ socket.on(Events.BROADCAST, function(data){
         break;
       case 'playerPlayCard':
         gameService.playerPlayCard(query.data.userId,query.data.cardIndex);
+            break;
       case 'gameOver':
         gameService.gameOver();
 

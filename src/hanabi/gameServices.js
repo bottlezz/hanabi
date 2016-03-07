@@ -112,6 +112,7 @@ class GameService{
     }else{
       table.life--;
       table.discardDeck.push(playedCard);
+
     }
 
     currentPlayer.hand.splice(cardIndex,1);
@@ -127,6 +128,8 @@ class GameService{
       if(nextPlayer.status = 2){
         //gameOver
         console.log("gameOver");
+
+
 
       }else{
         nextPlayer.status = 1;
@@ -172,7 +175,7 @@ class GameService{
       if(nextPlayer.status = 2){
         //gameOver
         console.log("gameOver");
-        var gameOverQuery={service:'game',action:'gameStart', data:{gameTable:table,players:players}};
+        var gameOverQuery={service:'game',action:'gameOver'};
         //send query;
 
         socket.emit(Events.BROADCAST, {roomId:room.roomId, userId:user.userId, data:gameOverQuery});
@@ -205,6 +208,8 @@ class GameService{
   gameOver(){
     let table = store.getState().gameTable;
     table.stage = gameStages.gameOver;
+    console.log("game over");
+    store.dispatch(updateTable(table));
 
   }
 
