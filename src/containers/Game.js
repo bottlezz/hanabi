@@ -14,7 +14,7 @@ export default class Game extends Component {
     var playStage = (<div></div>);
     var waitStage = (<div></div>);
     var endStage = (<div></div>);
-    var gameStage=(<div></div>);
+    var gameStage= null;
 
     switch(gameTable.stage){
       case gameStages.gamePrepare:
@@ -27,12 +27,16 @@ export default class Game extends Component {
       //case gameStages.gameOn
     }
     return (
-      <div>
-        <h3>Game</h3>
-        <span>remaining:{gameTable.cardDeck?gameTable.cardDeck.length:'N/A'}</span>
-        {gameStage}
-
-      </div>
+      <Row>
+        <Col xs={12}>
+          <Row>
+            <Col xs={12}>
+              <h3>Game</h3>
+            </Col>
+          </Row>
+          {gameStage}
+        </Col>
+      </Row>
     )
   }
   ready(){
@@ -95,12 +99,13 @@ class GamePrepareView extends Component{
     console.log("hello");
     if(!this.state.isReady)readyButton =(<button onClick={e=>this.handleReadyClick(e)}>Ready</button>);
     if(this.state.isReady && isHost) startButton =  (<button onClick={e=>this.handleStartClick(e)}>Start</button>);
-    return ( <p>
-      {readyButton}
-      {startButton}
+    return ( <Row>
+      <Col xs={12}>
+        {readyButton}
+        {startButton}
+      </Col>
 
-
-    </p>)
+    </Row>)
   }
   handleReadyClick(e){
     this.setState({isReady:true});
@@ -123,27 +128,34 @@ class GamePlayView extends Component{
     let myself=playerService.getPlayer(user.userId);
     if(myself==null)return (<div>game is in progress</div>);
 
-    var renderPlayers = function(p){
-      if(p.id!=user.userId) return (<PlayerHand hand={p.hand} />)
+    var renderPlayers = function(p, index){
+      if(p.id!=user.userId) return (<PlayerHand hand={p.hand} key={index} />)
       return;
     }
 
-    return (<div>
-      <p>My card </p>
-
+    return (
+      <Row>
+      <Col xs={12}>
+        <Row><Col xs={12}>
+        <h4>My card </h4>
         <PlayerHand hand={myself.hand} />
-      <p>Others</p>
-        {players.map(renderPlayers)}
-      <p>Table</p>
-      <TableView {...this.props}/>
+        </Col></Row>
+        <Row><Col xs={12}>
+          <h4>Others</h4>
+          {players.map(renderPlayers)}
+        </Col></Row>
+        <Row><Col xs={12}>
+          <h4>Table</h4>
+          <TableView {...this.props}/>
+        </Col></Row>
       {playerOption}
+</Col>
 
-
-    </div>)
+    </Row>)
   }
   play(index){
     const { user, room}=this.props;
-    let query = {service:'game', action:'playerPlayCard', data:{userId:user.userId, cardIndex:index} };
+    let query = {service:'game', action:'playerPlayCard', data:{userId:user.userId, cardIndex:index-1} };
     socket.emit(Events.BROADCAST, {roomId:room.roomId, userId:user.userId, data:query});
 
     //TODO:for local test
@@ -154,7 +166,7 @@ class GamePlayView extends Component{
   discard(index){
     const { user, room }=this.props;
 
-    let query = {service:'game', action:'playerDiscardCard', data:{userId:user.userId, cardIndex:index} };
+    let query = {service:'game', action:'playerDiscardCard', data:{userId:user.userId, cardIndex:index-1} };
     console.log("discard");
     socket.emit(Events.BROADCAST, {roomId:room.roomId, userId:user.userId, data:query});
     //TODO:for local test
@@ -164,30 +176,36 @@ class GamePlayView extends Component{
 }
 class TableView extends Component {
   //played item, and discards.
+
   render(){
     const{gameTable}=this.props
-    var renderCard = function(item,index){
-      if(item == null)return
-      return <li key={index}>{item.number},{item.color}</li>
-    }
+    var renderCard = function(item){
+      if(item == null)return;
+      return <Col xs={12}><div>{item.number}</div><div>{item.color}</div></Col>
+    };
     return(
         <Row>
-          <Col xs={3}>
-            <div>Card Remains</div>
-            <div>{gameTable.cardDeck.length}</div>
+          <Col xs={12}>
+            <Row>
+              <Col xs={3}>
+                <div>Card Remains</div>
+                <div>{gameTable.cardDeck.length}</div>
 
+              </Col>
+              <Col xs={3}>
+                <div>Hint Point</div>
+                <div>{gameTable.hint}</div>
+
+              </Col>
+              <Col xs={3}>
+                <div>Life Point</div>
+                <div>{gameTable.life}</div>
+              </Col>
+            </Row>
+            <Row>
+              {gameTable.playedCards.map(renderCard)}
+            </Row>
           </Col>
-          <Col xs={3}>
-            <div>Hint Point</div>
-            <div>{gameTable.hint}</div>
-
-          </Col>
-          <Col xs={3}>
-            <div>Life Point</div>
-            <div>{gameTable.life}</div>
-
-          </Col>
-
         </Row>
     )
 
@@ -197,9 +215,9 @@ class PlayerHand extends Component {
   render(){
     var renderCard = function(item,index){
       if(item == null)return <li>N/A</li>
-      return <li key={index}>{item.number},{item.color}</li>
+      return (<Col xs={2} key={index}><div>{item.number}</div><div>{item.color}</div></Col>)
     }
-    return <ul>{this.props.hand.map(renderCard)}</ul>
+    return <Row>{this.props.hand.map(renderCard)}</Row>
   }
 }
 class PlayerOption extends Component{

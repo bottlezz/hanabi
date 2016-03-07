@@ -42,12 +42,14 @@ export default class Room extends Component {
       }else{
         // game logic starts here
         return (
-          <div>
-            <div>your RoomId is {room.roomId}</div>
-            {userListView}
+          <Row>
+            <Col xs={12}>
 
-            <Game {...this.props}/>
-          </div>
+              {userListView}
+
+              <Game {...this.props}/>
+            </Col>
+          </Row>
 
         )
       }

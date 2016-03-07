@@ -62,7 +62,7 @@ class GameService{
     let players=store.getState().players;
 
     let numOfPlayers = players.length;
-    let cardLimit =3;
+    let cardLimit =5;
     if( numOfPlayers > 3)cardLimit =4;
 
     for(let i =0;i< numOfPlayers; i++){
@@ -96,7 +96,18 @@ class GameService{
     let playedCard = currentPlayer.hand[cardIndex];
 
     if(this.isValidPlay(playedCard)){
-      table.playedCards.push(playedCard);
+      if(playedCard.number > 1){
+        for(let i=1;i<table.playedCards.length;i++){
+          if(table.playedCards[i].color == playedCard.color){
+            //remove previous card and replaced by the new one.
+            table.playedCards.splice(i,1,playedCard);
+            break;
+          }
+        }
+      }else{
+        table.playedCards.push(playedCard);
+      }
+
       if(playedCard == 5 && table.hint<8)table.hint++;
     }else{
       table.life--;
@@ -107,8 +118,9 @@ class GameService{
     if(table.cardDeck.length>0){
 
       currentPlayer.hand.push(table.cardDeck[0]);
-      nextPlayer.status = 1;
       currentPlayer.status = 0;
+      nextPlayer.status = 1;
+
       table.cardDeck.splice(0,1);
     }else{
       currentPlayer.status = 2;
@@ -151,8 +163,9 @@ class GameService{
     if(table.cardDeck.length>0){
 
       currentPlayer.hand.push(table.cardDeck[0]);
-      nextPlayer.status = 1;
       currentPlayer.status = 0;
+      nextPlayer.status = 1;
+
       table.cardDeck.splice(0,1);
     }else{
       currentPlayer.status = 2;
@@ -183,8 +196,9 @@ class GameService{
 
       }
     }
-    return isSuccessive;
+    return isSuccessive
   }
+
   getActivePlayer(){
     let players = store.getState().players;
     for(let i=0; i< players.length; i++){

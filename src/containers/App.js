@@ -9,9 +9,12 @@ import {onUserDataUpdate,onRoomCreation} from '../actions'
 import {Grid,Row,Col} from 'react-bootstrap'
 class App extends Component {
   render() {
-    const { dispatch,user } = this.props
+    const { dispatch,user,room } = this.props
     //TODO, cookie support, get user from cookie
-    var userLogin="";
+    var userLogin=(<Row></Row>);
+    var roomLogin=(<Row><Col xs={12}>
+      <div>your RoomId is {room.roomId}</div>
+    </Col></Row>);
     if(user.userId){
       userLogin = (<Row><Col xs={12}>Hello, <span>{user.name}</span></Col></Row>)
     }else{
@@ -30,10 +33,11 @@ class App extends Component {
       //   onButtonClick={text =>dispatch(onUserDataUpdate({userId:'1',name:text}))}>
       // </SingleInputWithButton>)
     }
+    if(roomLogin)
     return (
       <Grid>
         {userLogin}
-
+        {room.roomId==null?null:roomLogin}
         <Row>
           <Col xs={12}>
             <Room {...this.props}></Room>
