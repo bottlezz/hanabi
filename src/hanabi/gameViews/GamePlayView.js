@@ -71,7 +71,7 @@ class TableView extends Component {
         const{gameTable}=this.props
         var renderCard = function(item){
             if(item == null)return;
-            return <Col xs={12}><div>{item.number}</div><div>{item.color}</div></Col>
+            return <Col xs={2}><div>{item.number}</div><div>{item.color}</div></Col>
         };
         return(
             <Row>
@@ -99,24 +99,5 @@ class TableView extends Component {
             </Row>
         )
 
-    }
-}
-class PlayerHand extends Component {
-    render(){
-        var renderCard = function(item,index){
-            if(item == null)return <li>N/A</li>
-            return (<Col xs={2} key={index}><div>{item.number}</div><div>{item.color}</div></Col>)
-        }
-        return <Row>{this.props.hand.map(renderCard)}</Row>
-    }
-}
-class PlayerOption extends Component{
-    render(){
-        return (<div>
-            <SingleInputWithButton onButtonClick={this.props.onPlayClick} meta={ {label: 'play index',submit:'play'}}></SingleInputWithButton>
-            <SingleInputWithButton onButtonClick={this.props.onDiscardClick} meta={ {label: 'discard index',submit:'discard'}}></SingleInputWithButton>
-
-            <button>Hint</button>
-        </div>)
     }
 }

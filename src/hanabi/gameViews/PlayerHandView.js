@@ -4,7 +4,7 @@ import {gameStages} from "../models"
 import {Events} from '../../actions'
 import socket from '../../socketStore'
 import SingleInputWithButton from "../../components/SingleInputWithButton"
-import {Grid,Row,Col} from 'react-bootstrap'
+import {Grid,Row,Col,ButtonGroup,Button} from 'react-bootstrap'
 
 export default class PlayerHandView extends Component {
     constructor(props){
@@ -13,17 +13,22 @@ export default class PlayerHandView extends Component {
 
     }
     render(){
-        let option =<OthersHandOption />
+        let option=null;
+        if(this.state.selectedCardIndex!=null){
+            let card = this.props.hand[this.state.selectedCardIndex]
+            option = <OthersHandOption color={card.color} number={card.number}/>
+        }
         if(this.props.isSelf) option = (
             <MyHandOption selectedCardIndex={this.state.selectedCardIndex}
-                          onPlayClick={index => handlePlay(index)}
-                          onDiscardClick={index => handleDiscard(index)}
+                          onPlayClick={index => this.handlePlay(index).bind(this)}
+                          onDiscardClick={index => this.handleDiscard(index).bind(this)}
             />
         );
 
         return (<Row><Col xs={12}>
             <Row>
-                {this.props.hand.map(this.renderCard.bind(this))}
+                {this.props.isSelf?this.props.hand.map(this.renderMyCard.bind(this)):
+                    this.props.hand.map(this.renderCard.bind(this))}
             </Row>
             {option}
 
@@ -37,10 +42,22 @@ export default class PlayerHandView extends Component {
         }
 
     }
+    renderMyCard(item,index){
+        if(item == null)return null;
+        let cardStyle = {border:'black solid 1px'};
+        if(this.state.selectedCardIndex!=null && this.state.selectedCardIndex == index ){
+            cardStyle = {border:'red solid 1px'};
+        }
+        return (
+            <Col xs={2} key={index} style={cardStyle} onClick={this.handleSelect.bind(this,index)} >
+                <div>{item.hintNumber?item.hintNumber:'?'}</div>
+                <div>{item.hintColor?item.hintColor:'?'}</div>
+            </Col>)
+    }
     renderCard (item,index){
         if(item == null)return null;
         let cardStyle = {border:'black solid 1px'};
-        if(this.state.selectedCardIndex && this.state.selectedCardIndex == index ){
+        if(this.state.selectedCardIndex!=null && this.state.selectedCardIndex == index ){
             cardStyle = {border:'red solid 1px'};
         }
         return (
@@ -70,8 +87,10 @@ class MyHandOption extends Component {
 
         return (<Row>
             <Col xs={12}>
-                <button onClick={e => this.handlePlay(e)}>Play</button>
-                <button onClick={e => this.handleDiscard(e)}>Discard</button>
+                <ButtonGroup>
+                    <Button onClick={e => this.handlePlay(e)}>Play</Button>
+                    <Button onClick={e => this.handleDiscard(e)}>Discard</Button>
+                </ButtonGroup>
             </Col>
         </Row>)
 
@@ -86,6 +105,21 @@ class MyHandOption extends Component {
 }
 class OthersHandOption extends Component {
     render(){
-        return null;
+        if(this.props.color==null && this.props.number==null )return null;
+
+        return (<Row>
+            <Col xs={12}>
+                <ButtonGroup>
+                    <Button onClick={e => this.handleColorHint(e)}>{this.props.color}</Button>
+                    <Button onClick={e => this.handleNumberHint(e)}>{this.props.number}</Button>
+                </ButtonGroup>
+            </Col>
+        </Row>)
+    }
+    handleColorHint(e){
+
+    }
+    handleNumberHint(e){
+
     }
 }
