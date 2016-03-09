@@ -21,7 +21,9 @@ export default function gameTable(state={
       return state;
       break;
     case Actions.update_table:
-      return Object.assign({},action.data)
+      console.log("store udpate table")
+      return Object.assign({},action.data);
+      break;
 
       //draw card, and update updated player list
     default:

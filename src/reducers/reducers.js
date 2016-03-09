@@ -1,7 +1,6 @@
 import { combineReducers } from 'redux'
-import  socket  from './socketStore'
-import {Events,Actions} from './actions'
-import gameTable from './reducers/gameTable'
+import {Events,Actions} from '../actions'
+import gameTable from './gameTable'
 
 function user(state={},action){
   switch (action.type) {
@@ -34,6 +33,7 @@ function room(state={},action){
 function players(state=[],action){
   switch (action.type) {
     case Actions.update_players:
+    console.log("store update players")
       return Object.assign([],action.data);
       break;
     case Actions.deal_cards:

@@ -57,10 +57,12 @@ socket.on(Events.BROADCAST, function(data){
         break;
       case 'playerPlayCard':
         gameService.playerPlayCard(query.data.userId,query.data.cardIndex);
-            break;
+        break;
+      case 'playerHint':
+        gameService.playerHint(query.data.userId,query.data.hintVal);
+        break;
       case 'gameOver':
         gameService.gameOver();
-
         break;
       default:
 

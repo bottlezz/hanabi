@@ -14,14 +14,14 @@ export default class PlayerHandView extends Component {
     }
     render(){
         let option=null;
-        if(this.state.selectedCardIndex!=null){
+        if(this.state.selectedCardIndex!=null&&this.props.active){
             let card = this.props.hand[this.state.selectedCardIndex]
-            option = <OthersHandOption color={card.color} number={card.number}/>
+            option = <OthersHandOption color={card.color} number={card.number}  userId={this.props.userId} onHintClick={this.handleHint.bind(this)}/>
         }
-        if(this.props.isSelf) option = (
+        if(this.props.isSelf&&this.props.active) option = (
             <MyHandOption selectedCardIndex={this.state.selectedCardIndex}
-                          onPlayClick={index => this.handlePlay(index).bind(this)}
-                          onDiscardClick={index => this.handleDiscard(index).bind(this)}
+                          onPlayClick={index => this.handlePlay(index)}
+                          onDiscardClick={index => this.handleDiscard(index)}
             />
         );
 
@@ -35,12 +35,17 @@ export default class PlayerHandView extends Component {
         </Col></Row>)
     }
     handleSelect(index){
-        if(this.state.selectedCardIndex ==index ){
-            this.setState({selectedCardIndex:null});
-        }else{
-            this.setState({selectedCardIndex:index});
-        }
+        if(this.props.active){
+            if(!this.props.isSelf && !this.props.canHint){
+                return;
+            }
+            if(this.state.selectedCardIndex ==index ){
 
+                this.setState({selectedCardIndex:null});
+            }else{
+                this.setState({selectedCardIndex:index});
+            }
+        }
     }
     renderMyCard(item,index){
         if(item == null)return null;
@@ -60,10 +65,13 @@ export default class PlayerHandView extends Component {
         if(this.state.selectedCardIndex!=null && this.state.selectedCardIndex == index ){
             cardStyle = {border:'red solid 1px'};
         }
+
+        let hinted={'text-decoration': 'line-through'};
+
         return (
             <Col xs={2} key={index} style={cardStyle} onClick={this.handleSelect.bind(this,index)} >
-                <div>{item.number}</div>
-                <div>{item.color}</div>
+                <div style={item.hintNumber?hinted:null}>{item.number}</div>
+                <div style={item.hintColor?hinted:null}>{item.color}</div>
             </Col>)
     }
     handlePlay(index){
@@ -76,6 +84,10 @@ export default class PlayerHandView extends Component {
         this.setState( {selectedCardIndex:null});
         this.props.discard(index);
 
+    }
+    handleHint(userId,hintVal){
+        this.setState({selectedCardIndex:null});
+        this.props.hint(userId,hintVal);
     }
 
 
@@ -110,16 +122,16 @@ class OthersHandOption extends Component {
         return (<Row>
             <Col xs={12}>
                 <ButtonGroup>
-                    <Button onClick={e => this.handleColorHint(e)}>{this.props.color}</Button>
-                    <Button onClick={e => this.handleNumberHint(e)}>{this.props.number}</Button>
+                    <Button onClick={this.handleColorHint.bind(this,this.props.color)}>{this.props.color}</Button>
+                    <Button onClick={this.handleNumberHint.bind(this,this.props.number)}>{this.props.number}</Button>
                 </ButtonGroup>
             </Col>
         </Row>)
     }
-    handleColorHint(e){
-
+    handleColorHint(color){
+        this.props.onHintClick(this.props.userId, color)
     }
-    handleNumberHint(e){
-
+    handleNumberHint(number){
+        this.props.onHintClick(this.props.userId, number)
     }
 }
