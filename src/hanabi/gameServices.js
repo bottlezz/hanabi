@@ -94,6 +94,7 @@ class GameService{
             }
         }
         let playedCard = currentPlayer.hand[cardIndex];
+        table.gameMessage = currentPlayer.displayName+" has played  "+playedCard.color+" "+playedCard.number+". ";
 
         if(this.isValidPlay(playedCard)){
             if(playedCard.number > 1){
@@ -174,6 +175,7 @@ class GameService{
                 nextPlayer.status = 1;
             }
         }
+        table.gameMessage = targetPlayer.displayName+" has been hinted with '"+hintVal+"'. ";
         store.dispatch(updatePlayers((players)));
         store.dispatch(updateTable(table));
     }
@@ -194,6 +196,7 @@ class GameService{
         if(table.hint<8){
             table.hint++;
         }
+        table.gameMessage = currentPlayer.displayName+" has discarded  "+playedCard.color+" "+playedCard.number+". ";
 
 
         table.discardDeck.push(playedCard);
@@ -217,8 +220,6 @@ class GameService{
                 nextPlayer.status = 1;
             }
         }
-
-
 
 
         store.dispatch(updatePlayers((players)));

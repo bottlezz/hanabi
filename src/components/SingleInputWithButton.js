@@ -1,22 +1,25 @@
 import React, { Component, PropTypes } from 'react'
 import {findDOMNode} from 'react-dom'
-
+import {Grid,Row,Col, Button,Input} from 'react-bootstrap'
 export default class SingleInputWithButton extends Component {
   render() {
       return (
-        <div>
+        <Row><Col xs={12} sm={6}>
           <h3>{this.props.meta?this.props.meta.label:'label'}</h3>
           <p>{this.props.meta?this.props.meta.description:'description'}</p>
-          <input type='text' ref='input' />
-          <button onClick={e => this.handleClick(e)}>
+            <Input type='text' ref='input' />
+
+          <Button block onClick={e => this.handleClick(e)}>
             {this.props.meta?this.props.meta.submit:'submit'}
-          </button>
-        </div>
+          </Button>
+
+        </Col></Row>
       )
   }
   handleClick(e) {
-    const node = findDOMNode(this.refs.input);
-    const text = node.value?node.value.trim():null;
+
+    const node = this.refs.input;
+    const text = node.getValue()?node.getValue().trim():null;
     this.props.onButtonClick(text);
     node.value = '';
   }

@@ -6,45 +6,49 @@ import SingleInputWithButton from "../components/SingleInputWithButton"
 import socket from '../socketStore'
 import {Events} from '../actions'
 import {onUserDataUpdate,onRoomCreation} from '../actions'
-import {Grid,Row,Col} from 'react-bootstrap'
+import {Grid,Row,Col,Navbar} from 'react-bootstrap'
 class App extends Component {
   render() {
-    const { dispatch,user,room } = this.props
+    const { dispatch,user,room } = this.props;
     //TODO, cookie support, get user from cookie
-    var userLogin=(<Row></Row>);
-    var roomLogin=(<Row><Col xs={12}>
-      <div>your RoomId is {room.roomId}</div>
-    </Col></Row>);
-    if(user.userId){
-      userLogin = (<Row><Col xs={12}>Hello, <span>{user.name}</span></Col></Row>)
-    }else{
-      let meta={
-        label:"Name",
-        description:"To start, enter a display name",
-        submit:"Start"
-      }
-      userLogin = (<Row>
-        <Col xs={12}>
-        <SingleInputWithButton meta={meta}
-        onButtonClick={text =>socket.emit(Events.GET_NEW_USER, {name:text})}>
-      </SingleInputWithButton></Col></Row>)
-      //for test
-      // userLogin = (<SingleInputWithButton meta={meta}
-      //   onButtonClick={text =>dispatch(onUserDataUpdate({userId:'1',name:text}))}>
-      // </SingleInputWithButton>)
-    }
-    if(roomLogin)
-    return (
-      <Grid>
-        {userLogin}
-        {room.roomId==null?null:roomLogin}
-        <Row>
-          <Col xs={12}>
-            <Room {...this.props}></Room>
-          </Col>
-        </Row>
+    let meta={
+      label:"Name",
+      description:"To start, enter a display name",
+      submit:"Start"
+    };
+    let userLogin = (
+    <SingleInputWithButton meta={meta}
+      onButtonClick={text =>socket.emit(Events.GET_NEW_USER, {name:text})}>
+    </SingleInputWithButton>);
 
-      </Grid>
+    let UserInfo=user.userId?(<Navbar.Text>Hello, {user.name}</Navbar.Text>):null;
+    let RoomInfo = room.roomId?(<Navbar.Text pullRight>{room.users.length} user(s) in room {room.roomId}</Navbar.Text>):null;
+    const navBarInstance = (
+        <Navbar>
+          <Navbar.Header>
+            <Navbar.Brand>
+              <a>GODABA</a>
+            </Navbar.Brand>
+            <Navbar.Toggle />
+          </Navbar.Header>
+          <Navbar.Collapse>
+            {UserInfo}
+            {RoomInfo}
+          </Navbar.Collapse>
+        </Navbar>
+    )
+    return (
+      <div>
+        {navBarInstance}
+        <Grid>
+          {user.userId?null:userLogin}
+          <Row>
+            <Col xs={12}>
+              <Room {...this.props}></Room>
+            </Col>
+          </Row>
+        </Grid>
+      </div>
     );
   }
 }

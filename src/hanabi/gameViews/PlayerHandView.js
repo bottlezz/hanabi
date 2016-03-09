@@ -4,7 +4,7 @@ import {gameStages} from "../models"
 import {Events} from '../../actions'
 import socket from '../../socketStore'
 import SingleInputWithButton from "../../components/SingleInputWithButton"
-import {Grid,Row,Col,ButtonGroup,Button} from 'react-bootstrap'
+import {Grid,Row,Col,ButtonGroup,Button, Well} from 'react-bootstrap'
 
 export default class PlayerHandView extends Component {
     constructor(props){
@@ -24,9 +24,13 @@ export default class PlayerHandView extends Component {
                           onDiscardClick={index => this.handleDiscard(index)}
             />
         );
+        let nameStyle =null;
+        if(this.props.isCurrent)nameStyle = {color:'red'};
 
-        return (<Row><Col xs={12}>
+        return (
+            <Row><Col xs={12}>
             <Row>
+                <Col xs={2}><span style= {nameStyle}>{this.props.name}</span></Col>
                 {this.props.isSelf?this.props.hand.map(this.renderMyCard.bind(this)):
                     this.props.hand.map(this.renderCard.bind(this))}
             </Row>
@@ -49,29 +53,33 @@ export default class PlayerHandView extends Component {
     }
     renderMyCard(item,index){
         if(item == null)return null;
-        let cardStyle = {border:'black solid 1px'};
-        if(this.state.selectedCardIndex!=null && this.state.selectedCardIndex == index ){
-            cardStyle = {border:'red solid 1px'};
+        let cardStyle = null;
+        if(this.state.selectedCardIndex!=null && this.state.selectedCardIndex == index && this.props.active ){
+            cardStyle = {marginTop:'10px'};
         }
         return (
-            <Col xs={2} key={index} style={cardStyle} onClick={this.handleSelect.bind(this,index)} >
-                <div>{item.hintNumber?item.hintNumber:'?'}</div>
-                <div>{item.hintColor?item.hintColor:'?'}</div>
+            <Col xs={2} key={index}  onClick={this.handleSelect.bind(this,index)} >
+                <Well bsSize="sm" style={cardStyle}>
+                    <div>{item.hintNumber?item.hintNumber:'?'}</div>
+                    <div>{item.hintColor?item.hintColor:'?'}</div>
+                </Well>
             </Col>)
     }
     renderCard (item,index){
         if(item == null)return null;
-        let cardStyle = {border:'black solid 1px'};
-        if(this.state.selectedCardIndex!=null && this.state.selectedCardIndex == index ){
-            cardStyle = {border:'red solid 1px'};
+        let cardStyle = null;
+        if(this.state.selectedCardIndex!=null && this.state.selectedCardIndex == index && this.props.active){
+            cardStyle = {marginTop:'10px'};
         }
 
-        let hinted={'text-decoration': 'line-through'};
+        let hinted={'textDecoration': 'line-through'};
 
         return (
-            <Col xs={2} key={index} style={cardStyle} onClick={this.handleSelect.bind(this,index)} >
-                <div style={item.hintNumber?hinted:null}>{item.number}</div>
-                <div style={item.hintColor?hinted:null}>{item.color}</div>
+            <Col xs={2} key={index}  onClick={this.handleSelect.bind(this,index)} >
+                <Well bsSize="sm" style={cardStyle}>
+                    <div style={item.hintNumber?hinted:null}>{item.number}</div>
+                    <div style={item.hintColor?hinted:null}>{item.color}</div>
+                </Well>
             </Col>)
     }
     handlePlay(index){

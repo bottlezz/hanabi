@@ -13,11 +13,7 @@ import GameOverView from '../hanabi/gameViews/GameOverView'
 export default class Game extends Component {
 
   render(){
-    const {gameTable,players, user } = this.props;
-
-    var playStage = (<div></div>);
-    var waitStage = (<div></div>);
-    var endStage = (<div></div>);
+    const {gameTable} = this.props;
     var gameStage= null;
 
     switch(gameTable.stage){

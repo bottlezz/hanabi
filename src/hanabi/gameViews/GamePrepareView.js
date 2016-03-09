@@ -5,7 +5,7 @@ import {gameStages} from "../models"
 import {Events} from '../../actions'
 import socket from '../../socketStore'
 import SingleInputWithButton from "../../components/SingleInputWithButton"
-import {Grid,Row,Col} from 'react-bootstrap'
+import {Grid,Row,Col,Button,Panel} from 'react-bootstrap'
 export default class  GamePrepareView extends Component{
   constructor(props){
     super(props);
@@ -13,17 +13,29 @@ export default class  GamePrepareView extends Component{
 
   }
   render(){
-    const {user,room} = this.props;
+    const {user,room,players} = this.props;
 
     let isHost = (room.users[0]==user.userId);
     let readyButton = null;
     let startButton = null;
-    if(!this.state.isReady)readyButton =(<button onClick={e=>this.handleReadyClick(e)}>Ready</button>);
-    if(this.state.isReady && isHost) startButton =  (<button onClick={e=>this.handleStartClick(e)}>Start</button>);
+    if(!this.state.isReady)readyButton =(<Button onClick={e=>this.handleReadyClick(e)}>Ready</Button>);
+    if(this.state.isReady && isHost) startButton =  (<Button onClick={e=>this.handleStartClick(e)}>Start</Button>);
+    let renderName=function(player){
+      return <p key={player.id}>{player.displayName + " - Ready "}</p>
+    }
     return ( <Row>
       <Col xs={12}>
-        {readyButton}
-        {startButton}
+        <Row><Col xs={8}>
+          <Panel header={"Player joins"}>
+            {players.map(renderName)}
+          </Panel>
+
+        </Col></Row>
+        <Row><Col xs={8}>
+          {readyButton}
+          {startButton}
+          </Col>
+        </Row>
       </Col>
 
     </Row>)

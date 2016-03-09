@@ -42,5 +42,6 @@ export class GameTable{
     //
     this.life = 3;
     this.hint=8;
+    this.gameMessage=null;
   }
 }
